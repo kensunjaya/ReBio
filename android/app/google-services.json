@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "785967856643",
+    "project_id": "rebio-36f88",
+    "storage_bucket": "rebio-36f88.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785967856643:android:207bdeea0c24c4fc682236",
+        "android_client_info": {
+          "package_name": "com.example.rebio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3u86qLljef2-LxSYMycGc3iC6-ATGiWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
