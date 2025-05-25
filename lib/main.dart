@@ -8,11 +8,11 @@ import 'package:rebio/widget_tree.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(HomeIoT());
+  runApp(ReBio());
 }
 
-class HomeIoT extends StatelessWidget {
-  const HomeIoT({super.key});
+class ReBio extends StatelessWidget {
+  const ReBio({super.key});
 
   @override
   Widget build(BuildContext context) {
