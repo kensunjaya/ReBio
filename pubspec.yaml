@@ -24,3 +24,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/mold.svg
+    - assets/water.svg
+    - assets/gas.svg
+    - assets/brown_sugar.svg

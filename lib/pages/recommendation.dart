@@ -49,6 +49,27 @@ class _RecommendationState extends State<Recommendation> {
                       points: "+3",
                       timeAgo: "2 hours ago",
                       svgAsset: 'assets/mold.svg',
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 20.0)),
+                    RecommendationCard(
+                      title: "Add 2L of Clean Water.",
+                      points: "+5",
+                      timeAgo: "6 hours ago",
+                      svgAsset: 'assets/water.svg',
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 20.0)),
+                    RecommendationCard(
+                      title: "Add 500gr of Brown Sugar.",
+                      points: "+6",
+                      timeAgo: "8 hours ago",
+                      svgAsset: 'assets/brown_sugar.svg',
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 20.0)),
+                    RecommendationCard(
+                      title: "Check for gas buildup.",
+                      points: "+3",
+                      timeAgo: "12 hours ago",
+                      svgAsset: 'assets/gas.svg',
                     )
                   ]
                 )
