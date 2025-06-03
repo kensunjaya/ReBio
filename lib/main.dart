@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rebio/pages/home.dart';
 import 'package:rebio/pages/login.dart';
+import 'package:rebio/pages/recommendation.dart';
 import 'package:rebio/pages/register.dart';
 import 'package:rebio/widget_tree.dart';
 
@@ -28,6 +29,7 @@ class ReBio extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
+        '/recommendation': (context) => Recommendation(),
       },
     );
   }
