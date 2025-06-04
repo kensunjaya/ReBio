@@ -8,6 +8,7 @@ class RecommendationCard extends StatelessWidget {
   final String points;
   final String timeAgo;
   final String svgAsset;
+  final VoidCallback? onTap;
 
   const RecommendationCard({
     super.key,
@@ -15,70 +16,66 @@ class RecommendationCard extends StatelessWidget {
     required this.points,
     required this.timeAgo,
     required this.svgAsset,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        elevation: 3,
+        shadowColor: Colors.grey.withValues(alpha: 0.5),
+        child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.5),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        title,
-                        style: GoogleFonts.notoSans(fontSize: 16),
-                        textAlign: TextAlign.left,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.0),
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          title,
+                          style: GoogleFonts.notoSans(fontSize: 16),
+                          textAlign: TextAlign.left,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            points,
+                            style: GoogleFonts.notoSans(fontSize: 16, color: yellowPoint),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                      child: Opacity(
+                        opacity: 0.5,
                         child: Text(
-                          points,
-                          style: GoogleFonts.notoSans(fontSize: 16, color: yellowPoint),
+                          timeAgo,
+                          style: GoogleFonts.notoSans(fontSize: 14),
+                          textAlign: TextAlign.left,
                         ),
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Opacity(
-                      opacity: 0.5,
-                      child: Text(
-                        timeAgo,
-                        style: GoogleFonts.notoSans(fontSize: 14),
-                        textAlign: TextAlign.left,
-                      ),
                     ),
-                  ),
-                ],
-              ),
-              SvgPicture.asset(
-                svgAsset,
-                colorFilter: ColorFilter.mode(
-                  primary,
-                  BlendMode.srcIn,
+                  ],
                 ),
-              ),
-            ],
+                SvgPicture.asset(
+                  svgAsset,
+                  colorFilter: ColorFilter.mode(
+                    primary,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
