@@ -5,6 +5,7 @@ import 'package:rebio/pages/home.dart';
 import 'package:rebio/pages/login.dart';
 import 'package:rebio/pages/recommendation.dart';
 import 'package:rebio/pages/register.dart';
+import 'package:rebio/theme/constants.dart';
 import 'package:rebio/widget_tree.dart';
 
 Future<void> main() async {
@@ -24,6 +25,11 @@ class ReBio extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: primary,
+          selectionColor: primary.withValues(alpha: 0.5),
+          selectionHandleColor: primary,
+        ),
       ),
       home: WidgetTree(),
       routes: {
