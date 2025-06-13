@@ -11,17 +11,27 @@ class LoginPage extends StatelessWidget {
   final passwordController = TextEditingController();
 
   Future<void> login(BuildContext context) async {
-    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+
+    if (email.isEmpty || password.isEmpty) {
       // CustomToast(context).showToast('Please fill in all required fields!', Icons.error_rounded);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all required fields!')),
+      );
       return;
     }
 
     try {
       await Auth().signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        email: email,
+        password: password,
       );
       // CustomToast(context).showToast('Logged in successfully!', Icons.check_rounded);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login successful!')),
+      );
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
       String errorMessage = switch (e.code) {
@@ -31,57 +41,137 @@ class LoginPage extends StatelessWidget {
         'wrong-password' => 'Incorrect password.',
         _ => 'Login failed. Please try again.',
       };
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
       // CustomToast(context).showToast(errorMessage, Icons.error_rounded);
-    } catch (e) {
-      // CustomToast(context).showToast('An unexpected error occurred.', Icons.error_rounded);
+    } catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An unexpected error occured.')),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
+      // appBar: AppBar(title: const Text('Login')),
+      backgroundColor: Color(0xFFF1F5F9),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Login',
+                style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
+              // Username Box
+              const SizedBox(height: 24),
+              TextFormField(
+                //controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Username/Email',
+                  hintText: 'Please input your username or email',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => login(context),
-                child: const Text('Login'),
+              
+              //Password Box
+              const SizedBox(height: 16),
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  hintText: 'must be 8 characters',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RegisterPage()),
-                );
-              },
-              child: const Text("Don't have an account? Register"),
-            ),
-          ],
-        ),
+              // Forgot Password
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text('Forgot password?',
+                  style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
+
+              //Login Button
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => login(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF10493F),
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                  ),
+                  child: const Text(
+                    'Log in',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),                  
+                ),
+              ),
+
+              //Other option to log in
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(child: Divider()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text('Or log in with'),
+                    ),
+                    Expanded(child: Divider()),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: Image.asset(
+                      'assets/images/google_logo.png',
+                      height: 24,                    
+                    ),
+                  ),
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: Icon(Icons.facebook, color: Colors.blue),
+                  ),
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: Icon(Icons.apple),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RegisterPage()),
+                  );
+                },
+                child: const Text(
+                  "Don't have an account? Sign up",
+                  style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+            ],
+          )
+        )
+        ,
       ),
     );
   }
