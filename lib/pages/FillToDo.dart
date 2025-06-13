@@ -13,6 +13,20 @@ class Filltodo extends StatefulWidget {
 
 class _FilltodoState extends State<Filltodo> {
   String? _selectedImage;
+  String? taskTitle;
+  int? points;
+  bool enableEditingTaskTitle = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      if (args.containsKey('taskTitle')) enableEditingTaskTitle = false;
+      taskTitle = args['taskTitle'] as String?;
+      points = args['points'] as int?;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +106,15 @@ class _FilltodoState extends State<Filltodo> {
                                 "Task Title",
                                 style: GoogleFonts.notoSans(fontSize: 14, color: Colors.grey.withValues(alpha: 1.0)),
                               ),
+
                               SizedBox(height: 6),
                               TextField(
                                 maxLines: 1,
+                                controller: TextEditingController(text: taskTitle ?? ""),
+                                onChanged: (value) {
+                                  taskTitle = value;
+                                },
+                                enabled: enableEditingTaskTitle,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -105,7 +125,10 @@ class _FilltodoState extends State<Filltodo> {
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(color: primary, width: 2),
                                   ),
-                                  
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(color: Colors.grey.withValues(alpha: 1)),
+                                  ),
                                   hintText: "What did you do today ...",
                                   hintStyle: GoogleFonts.notoSans(fontSize: 16, color: Colors.grey),
                                 ),
@@ -161,7 +184,7 @@ class _FilltodoState extends State<Filltodo> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                children: [            
+                                children: [
                                   Container(
                                     width: 32,
                                     height: 32,

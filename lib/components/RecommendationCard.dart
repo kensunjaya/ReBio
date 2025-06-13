@@ -5,7 +5,7 @@ import 'package:rebio/theme/constants.dart';
 
 class RecommendationCard extends StatelessWidget {
   final String title;
-  final String points;
+  final num points;
   final String timeAgo;
   final String svgAsset;
   final VoidCallback? onTap;
@@ -48,7 +48,7 @@ class RecommendationCard extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(left: 8.0),
                           child: Text(
-                            points,
+                            "+$points",
                             style: GoogleFonts.notoSans(fontSize: 16, color: yellowPoint),
                           ),
                         ),
