@@ -46,31 +46,46 @@ class _RecommendationState extends State<Recommendation> {
                       Padding(padding: EdgeInsets.only(bottom: 8.0)),
                       RecommendationCard(
                         title: "Inspect for mold growth.",
-                        points: "+3",
+                        points: 3,
                         timeAgo: "2 hours ago",
                         svgAsset: 'assets/mold.svg',
-                        onTap: () => Navigator.pushNamed(context, '/filltodo')
+                        onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
+                          'taskTitle': 'Inspect for mold growth',
+                          'points': 3,
+                        }),
                       ),
                       Padding(padding: EdgeInsets.only(bottom: 20.0)),
                       RecommendationCard(
                         title: "Add 2L of Clean Water.",
-                        points: "+5",
+                        points: 5,
                         timeAgo: "6 hours ago",
                         svgAsset: 'assets/water.svg',
+                        onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
+                          'taskTitle': 'Add 2L of Clean Water',
+                          'points': 5,
+                        }),
                       ),
                       Padding(padding: EdgeInsets.only(bottom: 20.0)),
                       RecommendationCard(
                         title: "Add 500gr of Brown Sugar.",
-                        points: "+6",
+                        points: 6,
                         timeAgo: "8 hours ago",
                         svgAsset: 'assets/brown_sugar.svg',
+                        onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
+                          'taskTitle': 'Add 500gr of Brown Sugar',
+                          'points': 6,
+                        }),
                       ),
                       Padding(padding: EdgeInsets.only(bottom: 20.0)),
                       RecommendationCard(
                         title: "Check for gas buildup.",
-                        points: "+3",
+                        points: 3,
                         timeAgo: "12 hours ago",
                         svgAsset: 'assets/gas.svg',
+                        onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
+                          'taskTitle': 'Check for gas buildup',
+                          'points': 3,
+                        }),
                       )
                     ]
                   ),
