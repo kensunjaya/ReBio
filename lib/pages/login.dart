@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
         SnackBar(content: Text(errorMessage)),
       );
       // CustomToast(context).showToast(errorMessage, Icons.error_rounded);
-    } catch (_) {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An unexpected error occured.')),
       );
