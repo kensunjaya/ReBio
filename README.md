@@ -41,14 +41,14 @@ ReBio is a mobile application built with Flutter and Firebase for Eco-Enzyme Mon
 ## 📁 Project Structure
 | File / Folder        | Description                                           |
 |----------------------|-------------------------------------------------------|
-|`lib/`
+`lib/`
 |├─ auth.dart          | Firebase authentication logic
 |├─ main.dart          | App entry point
 |├─ login.dart         | Login page UI
 |├─ register.dart      | Registration UI
-|└─ home.dart          | Monitoring system from the eco enzyme station
-|└─ recommendation.dart          | Recommendation Page
-|└─ history.dart          | See user contribution log
+|├─ home.dart          | Monitoring system from the eco enzyme station
+|├─ recommendation.dart          | Recommendation Page
+|├─ history.dart          | See user contribution log
 |└─ FillToDo.dart          | User To Do list
 
 ## 🧑‍💻 Contributing
