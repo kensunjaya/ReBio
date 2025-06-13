@@ -11,11 +11,7 @@ class LoginPage extends StatelessWidget {
   final passwordController = TextEditingController();
 
   Future<void> login(BuildContext context) async {
-    final email = emailController.text.trim();
-    final password = passwordController.text.trim();
-
-
-    if (email.isEmpty || password.isEmpty) {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       // CustomToast(context).showToast('Please fill in all required fields!', Icons.error_rounded);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please fill in all required fields!')),
@@ -25,8 +21,8 @@ class LoginPage extends StatelessWidget {
 
     try {
       await Auth().signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
       // CustomToast(context).showToast('Logged in successfully!', Icons.check_rounded);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -70,7 +66,7 @@ class LoginPage extends StatelessWidget {
               // Username Box
               const SizedBox(height: 24),
               TextFormField(
-                //controller: emailController,
+                controller: emailController,
                 decoration: const InputDecoration(
                   labelText: 'Username/Email',
                   hintText: 'Please input your username or email',
