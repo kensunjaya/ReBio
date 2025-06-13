@@ -11,17 +11,27 @@ class LoginPage extends StatelessWidget {
   final passwordController = TextEditingController();
 
   Future<void> login(BuildContext context) async {
-    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+
+    if (email.isEmpty || password.isEmpty) {
       // CustomToast(context).showToast('Please fill in all required fields!', Icons.error_rounded);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all required fields!')),
+      );
       return;
     }
 
     try {
       await Auth().signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        email: email,
+        password: password,
       );
       // CustomToast(context).showToast('Logged in successfully!', Icons.check_rounded);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login successful!')),
+      );
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
       String errorMessage = switch (e.code) {
@@ -31,9 +41,14 @@ class LoginPage extends StatelessWidget {
         'wrong-password' => 'Incorrect password.',
         _ => 'Login failed. Please try again.',
       };
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
       // CustomToast(context).showToast(errorMessage, Icons.error_rounded);
-    } catch (e) {
-      // CustomToast(context).showToast('An unexpected error occurred.', Icons.error_rounded);
+    } catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An unexpected error occured.')),
+      );
     }
   }
 
