@@ -1,3 +1,4 @@
-# rebio
+# 🌱 rebio
 
-A new Flutter project.
+ReBio is a mobile application built with Flutter and Firebase for Eco-Enzyme Monitoring System integrated with IoT technology.
+
