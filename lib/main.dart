@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rebio/components/BottomNavbar.dart';
 import 'package:rebio/pages/FillToDo.dart';
 import 'package:rebio/pages/home.dart';
 import 'package:rebio/pages/login.dart';
@@ -38,6 +39,7 @@ class ReBio extends StatelessWidget {
         '/register': (context) => RegisterPage(),
         '/recommendation': (context) => Recommendation(),
         '/filltodo': (context) => Filltodo(), // Placeholder for filltodo page
+        '/mainscreen': (context) => MainScreen(),
       },
     );
   }

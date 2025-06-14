@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login successful!')),
       );
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/mainscreen');
     } on FirebaseAuthException catch (e) {
       String errorMessage = switch (e.code) {
         'invalid-email' => 'The email address is not valid.',
