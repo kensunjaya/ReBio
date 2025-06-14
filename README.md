@@ -17,6 +17,15 @@ ReBio is a mobile application built with Flutter and Firebase for Eco-Enzyme Mon
 - Flutter 3+
 - Firebase Auth (via firebase_auth)
 
+## 📸 Snapshots
+Register page UI
+![Screenshot 2025-06-14 195155](https://github.com/user-attachments/assets/b8438fd2-b375-40b9-b4db-e04c52df2ecf)
+Login page UI
+![Screenshot 2025-06-14 195204](https://github.com/user-attachments/assets/54c6d533-471a-4479-bec2-e2241a8b2f52)
+Home page UI
+![Screenshot 2025-06-14 195228](https://github.com/user-attachments/assets/c59b2478-48bd-4718-b26c-abf2649a456c)
+
+
 ## 📦 Setup
 1. Clone the repository:
    ```
