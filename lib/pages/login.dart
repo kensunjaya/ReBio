@@ -7,11 +7,18 @@ import 'package:rebio/components/CustomTextField.dart';
 import 'package:rebio/theme/constants.dart';
 import 'register.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget{
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool _obscurePassword = true;
 
   Future<void> login(BuildContext context) async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
@@ -87,7 +94,13 @@ class LoginPage extends StatelessWidget {
                   
                   //Password Box
                   const SizedBox(height: 16),
-                  CustomTextInput(label: "Password", hintText: "must be 8 characters", controller: passwordController, isPassword: true),
+                  CustomTextInput(label: "Password", hintText: "must be 8 characters", controller: passwordController, isPassword: true, obscureText: _obscurePassword,
+                  onToggleVisibility: (){
+                    setState((){
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                  ),
                   // Forgot Password
                   const SizedBox(height: 8),
                   Align(
@@ -128,7 +141,7 @@ class LoginPage extends StatelessWidget {
                         onPressed: () {},
                         child: Image.asset(
                           'assets/images/google_logo.png',
-                          height: 24,                    
+                          height: 16,                    
                         ),
                       ),
                       OutlinedButton(
@@ -172,3 +185,4 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+

@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:rebio/components/CustomButton.dart';
+import 'package:rebio/components/CustomTextField.dart';
+import 'package:rebio/theme/constants.dart';
+import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -13,6 +18,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final usernameController = TextEditingController();
+  bool _acceptTerms = false;
+  bool _obscurePassword = true;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -58,45 +65,145 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
-              ),
+      // appBar: AppBar(title: const Text('Register')),
+      backgroundColor: Color(0xFFF1F5F9),
+      body: Center(
+        child:SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.5),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset(0, 3),
+                )
+              ] 
             ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 32, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Register Tittle
+                  Text(
+                    "Create Account",
+                    style: GoogleFonts.notoSans(color: Colors.black, fontSize: 28, fontWeight: FontWeight.w800),
+                  ),
+                  // Username Box
+                  const SizedBox(height: 20),
+                  CustomTextInput(
+                    controller: usernameController,
+                    label: 'Username',
+                    hintText: 'Your Username',                    
+                  ),
+                  // Email Box
+                  const SizedBox(height: 16),
+                  CustomTextInput(
+                    controller: emailController,
+                    label: 'Email',
+                    hintText: 'Your Email',                    
+                  ),
+                   // Password Box
+                  const SizedBox(height: 16),
+                  CustomTextInput(
+                    controller: passwordController,
+                    isPassword: true,
+                    label: 'Password',
+                    hintText: 'must be 8 characters',
+                    obscureText: _obscurePassword,
+                    onToggleVisibility: (){
+                      setState((){
+                      _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
+                  // Accept terms box
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _acceptTerms,
+                        onChanged: (value){
+                          setState(() {
+                            _acceptTerms = value ?? false;
+                          });
+                        },
+                        fillColor: WidgetStateProperty.all(Color(0xFF165A4A)),
+                        checkColor: Colors.white,
+                      ),
+                      const Expanded(
+                        child: Text("I accept the terms and privacy policy"),
+                        ),
+                    ],
+                  ),
+                  // Register Button
+                  const SizedBox(height: 24),
+                  CustomButton(
+                    text: "Create Account",
+                    onPressed: () => registerUser(context),
+                    verticalPadding: 16,
+                    backgroundColor: secondary,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(child: Divider()),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text('Or Register with'),
+                      ),
+                      Expanded(child: Divider()),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: Image.asset(
+                          'assets/images/google_logo.png',
+                          height: 16,                    
+                        ),
+                      ),
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.facebook, color: Colors.blue),
+                      ),
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.apple),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Already have an account?", style: GoogleFonts.notoSans(color: Colors.black, fontSize: 14)),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginPage()),
+                          );
+                        },
+                        child: Text(
+                          "Log in",
+                          style: GoogleFonts.notoSans(color: primary, fontSize: 14, fontWeight: FontWeight.w600, decoration: TextDecoration.underline)
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => registerUser(context),
-                child: const Text('Register'),
-              ),
-            ),
-          ],
+            ), 
+          ),
         ),
       ),
     );
