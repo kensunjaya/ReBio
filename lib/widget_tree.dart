@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rebio/auth.dart';
+import 'package:rebio/components/BottomNavbar.dart';
 import 'package:rebio/pages/home.dart';
 import 'package:rebio/pages/login.dart';
 import 'package:rebio/pages/recommendation.dart';
@@ -17,7 +18,7 @@ class _WidgetTreeState extends State<WidgetTree> {
     return StreamBuilder(
       stream: Auth().authStateChanges,
       // builder: (context, snapshot) => snapshot.hasData ? HomePage(initialPage: true) : LoginPage(),
-      builder: (context, snapshot) => snapshot.hasData ? HomePage() : LoginPage(),
+      builder: (context, snapshot) => snapshot.hasData ? MainScreen() : LoginPage(),
     );
   }
 }
