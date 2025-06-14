@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rebio/components/CustomButton.dart';
+import 'package:rebio/components/CustomTextField.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -13,7 +15,8 @@ class Filltodo extends StatefulWidget {
 
 class _FilltodoState extends State<Filltodo> {
   String? _selectedImage;
-  String? taskTitle;
+  final taskTitleController = TextEditingController();
+  final taskDetailsController = TextEditingController();
   int? points;
   bool enableEditingTaskTitle = true;
 
@@ -23,7 +26,7 @@ class _FilltodoState extends State<Filltodo> {
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       if (args.containsKey('taskTitle')) enableEditingTaskTitle = false;
-      taskTitle = args['taskTitle'] as String?;
+      taskTitleController.text = (args['taskTitle'] as String?) ?? "";
       points = args['points'] as int?;
     }
   }
@@ -102,60 +105,9 @@ class _FilltodoState extends State<Filltodo> {
                                 ],
                               ),
                               SizedBox(height: 20),
-                              Text(
-                                "Task Title",
-                                style: GoogleFonts.notoSans(fontSize: 14, color: Colors.grey.withValues(alpha: 1.0)),
-                              ),
-
-                              SizedBox(height: 6),
-                              TextField(
-                                maxLines: 1,
-                                controller: TextEditingController(text: taskTitle ?? ""),
-                                onChanged: (value) {
-                                  taskTitle = value;
-                                },
-                                enabled: enableEditingTaskTitle,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.5)),
-                                  ),
-                                  focusColor: Colors.grey.withValues(alpha: 0.5),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: primary, width: 2),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: Colors.grey.withValues(alpha: 1)),
-                                  ),
-                                  hintText: "What did you do today ...",
-                                  hintStyle: GoogleFonts.notoSans(fontSize: 16, color: Colors.grey),
-                                ),
-                              ),
+                              CustomTextInput(label: "Task Title", hintText: "What did you do today?", controller: taskTitleController, enabled: enableEditingTaskTitle),
                               SizedBox(height: 16),
-                              Text(
-                                "Task Details",
-                                style: GoogleFonts.notoSans(fontSize: 14, color: Colors.grey.withValues(alpha: 1.0)),
-                              ),
-                              SizedBox(height: 6),
-                              TextField(
-                                maxLines: 4,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.5)),
-                                  ),
-                                  focusColor: Colors.grey.withValues(alpha: 0.5),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: primary, width: 2),
-                                  ),
-                                  
-                                  hintText: "Tell us in detail what you have done today ...",
-                                  hintStyle: GoogleFonts.notoSans(fontSize: 16, color: Colors.grey),
-                                ),
-                              ),
+                              CustomTextInput(label: "Task Details", hintText: "Tell us in detail what you have done today ...", controller: taskDetailsController, maxLines: 4),  
                             ],
                           ),
                         ),
@@ -258,25 +210,11 @@ class _FilltodoState extends State<Filltodo> {
                       )
                     ),
                     Padding(padding: EdgeInsets.only(bottom: 32.0)),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Nanti bakal hubungkan ke Firestore untuk store data task
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primary,
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          "Submit Task",
-                          style: GoogleFonts.notoSans(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
+                    CustomButton(
+                      text: "Submit your work", 
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }
                     )
                   ]
                 )

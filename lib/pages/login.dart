@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rebio/auth.dart'; // Replace with your actual auth path
+import 'package:rebio/components/CustomButton.dart';
+import 'package:rebio/components/CustomTextField.dart';
+import 'package:rebio/theme/constants.dart';
 import 'register.dart';
 
 class LoginPage extends StatelessWidget {
@@ -56,115 +59,112 @@ class LoginPage extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Login',
-                style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold),
-              ),
-              // Username Box
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Username/Email',
-                  hintText: 'Please input your username or email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              
-              //Password Box
-              const SizedBox(height: 16),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'must be 8 characters',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              // Forgot Password
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text('Forgot password?',
-                  style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ),
-
-              //Login Button
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => login(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF10493F),
-                    padding: const EdgeInsets.symmetric(vertical: 24),
-                  ),
-                  child: const Text(
-                    'Log in',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),                  
-                ),
-              ),
-
-              //Other option to log in
-              const SizedBox(height: 16),
-              Row(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.5),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset(0, 3),
+                )
+              ]
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 32, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(child: Divider()),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text('Or log in with'),
-                    ),
-                    Expanded(child: Divider()),
-                ],
-              ),
-
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: Image.asset(
-                      'assets/images/google_logo.png',
-                      height: 24,                    
+                  Text(
+                    'Login',
+                    style: GoogleFonts.notoSans(color: Colors.black, fontSize: 28, fontWeight: FontWeight.w800),
+                  ),
+                  // Username Box
+                  const SizedBox(height: 24),
+                  CustomTextInput(label: "Email", hintText: "Your email address", controller: emailController),
+                  
+                  //Password Box
+                  const SizedBox(height: 16),
+                  CustomTextInput(label: "Password", hintText: "must be 8 characters", controller: passwordController, isPassword: true),
+                  // Forgot Password
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text('Forgot password?', style: TextStyle(color: Colors.black)),
                     ),
                   ),
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: Icon(Icons.facebook, color: Colors.blue),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: Icon(Icons.apple),
-                  ),
-                ],
-              ),
 
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const RegisterPage()),
-                  );
-                },
-                child: const Text(
-                  "Don't have an account? Sign up",
-                  style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold
+                  //Login Button
+                  const SizedBox(height: 24),
+                  CustomButton(
+                    text: "Log in", 
+                    onPressed: () => login(context),
+                    verticalPadding: 18,
+                    backgroundColor: secondary,
                   ),
-                ),
-              ),
-            ],
+
+                  //Other option to log in
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(child: Divider()),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text('Or log in with'),
+                      ),
+                      Expanded(child: Divider()),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: Image.asset(
+                          'assets/images/google_logo.png',
+                          height: 24,                    
+                        ),
+                      ),
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.facebook, color: Colors.blue),
+                      ),
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.apple),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Don't have an account?", style: GoogleFonts.notoSans(color: Colors.black, fontSize: 14)),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          );
+                        },
+                        child: Text(
+                          "Sign up",
+                          style: GoogleFonts.notoSans(color: primary, fontSize: 14, fontWeight: FontWeight.w600, decoration: TextDecoration.underline)
+                        ),
+                      ),
+                    ],
+                  )
+                  
+                ],
+              )
+            )
           )
         )
         ,
