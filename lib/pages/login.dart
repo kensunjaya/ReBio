@@ -135,10 +135,15 @@ class _LoginPageState extends State<LoginPage> {
 
                   const SizedBox(height: 16),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       OutlinedButton(
                         onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                         child: Image.asset(
                           'assets/images/google_logo.png',
                           height: 16,                    
@@ -146,10 +151,20 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       OutlinedButton(
                         onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                         child: Icon(Icons.facebook, color: Colors.blue),
                       ),
                       OutlinedButton(
                         onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                         child: Icon(Icons.apple),
                       ),
                     ],
