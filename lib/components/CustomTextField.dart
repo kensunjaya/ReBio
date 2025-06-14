@@ -10,6 +10,9 @@ class CustomTextInput extends StatelessWidget {
   final bool isPassword;
   final int maxLines;
 
+  final bool obscureText;
+  final VoidCallback? onToggleVisibility;
+
   const CustomTextInput({
     super.key,
     required this.label,
@@ -18,6 +21,8 @@ class CustomTextInput extends StatelessWidget {
     this.isPassword = false,
     this.maxLines = 1,
     this.enabled = true,
+    this.obscureText = false,
+    this.onToggleVisibility,
   });
 
   @override
@@ -38,7 +43,7 @@ class CustomTextInput extends StatelessWidget {
           maxLines: maxLines,
           controller: controller,
           enabled: enabled,
-          obscureText: isPassword,
+          obscureText: isPassword ? obscureText : false,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: GoogleFonts.notoSans(fontSize: 16, color: Colors.grey),
@@ -54,6 +59,15 @@ class CustomTextInput extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.grey.withValues(alpha: 1)),
             ),
+            suffixIcon: isPassword
+              ? IconButton(
+                icon: Icon(
+                  obscureText ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.grey,
+                ),
+                onPressed: onToggleVisibility,
+              )
+            : null,
           ),
         ),
       ],
