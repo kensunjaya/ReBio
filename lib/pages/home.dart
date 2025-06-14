@@ -1,62 +1,15 @@
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:rebio/theme/constants.dart';
-// import 'package:google_fonts/google_fonts.dart';
-
-
-// class HomePage extends StatefulWidget {
-//   const HomePage({super.key});
-
-//   @override
-//   State<HomePage> createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage> {
-
 //   // ini buat sementara aja log out nya ditaro di home page, later bakal dipindahin ke Profile Page kalo udah ada Profile Page.
 //   void logout(BuildContext context) async {
 //     await FirebaseAuth.instance.signOut();
 //     Navigator.pushReplacementNamed(context, '/login');
 //   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: bg,
-//       appBar: AppBar(
-//         title: const Text('Home'),
-//         backgroundColor: bg,
-//         actions: [
-//           IconButton(
-//             icon: const Icon(Icons.logout),
-//             onPressed: () => logout(context),
-//             tooltip: 'Logout',
-//           ),
-//         ],
-//       ),
-//       body: Center(
-
-
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.only(bottom: 8.0),
-//               child: Text("Hello, Username!", style: GoogleFonts.notoSans(fontSize: 24, fontWeight: FontWeight.w600)),
-//             ),
-//       ]),
-//     ));
-//   }
-// }
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// Anda mungkin perlu menghapus import ini jika 'bg' tidak digunakan lagi
-// atau jika Anda ingin menggunakan warna dari sini.
-// import 'package:rebio/theme/constants.dart'; 
 import 'package:google_fonts/google_fonts.dart';
-const Color kBackgroundColor = Color(0xFFF0F4F3);
-const Color kPrimaryColor = Color(0xFF4CAF50);
+import 'package:rebio/pages/contributors.dart';
+import 'package:rebio/theme/constants.dart';
 const Color kGreyTextColor = Colors.grey;
 const Color kDarkTextColor = Colors.black87;
 
@@ -94,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor, // Menggunakan warna dari konstanta
+      backgroundColor: bg, // Menggunakan warna dari konstanta
       body: SafeArea(
         child: Stack( // Gunakan Stack untuk menumpuk tombol logout di atas konten
           children: [
@@ -115,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 16),
 
                   // 3. Tombol Lihat Kontributor
-                  _buildContributorsButton(),
+                  _buildContributorsButton(context),
                   const SizedBox(height: 20),
 
                   // 4. Kartu Info (Waktu & Progres)
@@ -170,7 +123,7 @@ class _HomePageState extends State<HomePage> {
           const TextSpan(text: 'Hello, '),
           TextSpan(
             text: "Username",
-            style: const TextStyle(color: kPrimaryColor),
+            style: const TextStyle(color: primary),
           ),
         ],
       ),
@@ -183,6 +136,14 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withValues(alpha: 0.5),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 3),
+          )
+        ]
       ),
       // Gunakan Column sebagai widget utama untuk menyusun elemen secara vertikal
       child: Column(
@@ -211,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                       style: GoogleFonts.notoSans(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
-                        color: kPrimaryColor,
+                        color: primary,
                       ),
                     ),
                   ],
@@ -223,17 +184,17 @@ class _HomePageState extends State<HomePage> {
                 width: 90,
                 height: 90,
                 decoration: BoxDecoration(
-                  color: kPrimaryColor.withOpacity(0.2),
+                  color: primary.withOpacity(0.4),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: Image.asset(
                     'assets/images/ecoenzyme.png',
-                    width: 60,
+                    width: 50,
                     errorBuilder: (context, error, stackTrace) {
                       return const Icon(
                         Icons.broken_image_rounded,
-                        color: Colors.grey,
+                        color: secondary,
                         size: 40,
                       );
                     },
@@ -258,36 +219,52 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Widget untuk tombol "View all contributors"
-  Widget _buildContributorsButton() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
+   Widget _buildContributorsButton(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(15.0),
+      elevation: 4.0,
+      shadowColor: Colors.grey.withValues(alpha: 0.5),
+      child: InkWell(
         borderRadius: BorderRadius.circular(15.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-          )
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'View all contributors',
-            style: GoogleFonts.notoSans(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: kDarkTextColor,
-            ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ContributorsPage()),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(15.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 3,
+              )
+            ],
           ),
-          const Icon(Icons.arrow_forward_ios, size: 18, color: kGreyTextColor),
-        ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'View all contributors',
+                style: GoogleFonts.notoSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: kDarkTextColor,
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios, size: 18, color: kGreyTextColor),
+            ],
+          ),
+        ),
       ),
     );
   }
+
 
   // Template kartu untuk info (Waktu, Progres)
   Widget _buildInfoCard({
@@ -302,9 +279,10 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.5),
             spreadRadius: 1,
-            blurRadius: 5,
+            blurRadius: 3,
+            offset: Offset(0, 3),
           )
         ],
       ),
@@ -344,9 +322,10 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.5),
             spreadRadius: 1,
-            blurRadius: 5,
+            blurRadius: 3,
+            offset: Offset(0, 3),
           )
         ],
       ),
@@ -415,9 +394,10 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.5),
             spreadRadius: 1,
-            blurRadius: 5,
+            blurRadius: 3,
+            offset: Offset(0, 3)
           )
         ],
       ),
