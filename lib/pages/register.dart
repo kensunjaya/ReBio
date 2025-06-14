@@ -66,12 +66,11 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(title: const Text('Register')),
-      backgroundColor: Color(0xFFF1F5F9),
+      backgroundColor: bg,
       body: Center(
         child:SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Container(
-            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -133,12 +132,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             _acceptTerms = value ?? false;
                           });
                         },
-                        fillColor: WidgetStateProperty.all(Color(0xFF165A4A)),
+                        fillColor: WidgetStateProperty.all(secondary),
+                        side: BorderSide(color: secondary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        
                         checkColor: Colors.white,
                       ),
                       const Expanded(
                         child: Text("I accept the terms and privacy policy"),
-                        ),
+                      ),
                     ],
                   ),
                   // Register Button
