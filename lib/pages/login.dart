@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
         'user-disabled' => 'Your account has been disabled.',
         'user-not-found' => 'No user found with this email.',
         'wrong-password' => 'Incorrect password.',
+        'invalid-credential' => 'Invalid credentials provided.',
         _ => 'Login failed. Please try again.',
       };
       ScaffoldMessenger.of(context).showSnackBar(
