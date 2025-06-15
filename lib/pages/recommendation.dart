@@ -96,6 +96,7 @@ class _RecommendationState extends State<Recommendation> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: 'Add a new task', // Descriptive label for accessibility
         onPressed: () {
           // Define your action, like opening a new task screen
           Navigator.pushNamed(context, '/filltodo');
