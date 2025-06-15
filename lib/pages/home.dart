@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
         child: Stack( // Gunakan Stack untuk menumpuk tombol logout di atas konten
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -52,11 +52,11 @@ class _HomePageState extends State<HomePage> {
 
                   // 1. Teks Sambutan (Header)
                   _buildHeader(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // 2. Kartu Kondisi Utama
                   _buildHealthyCard(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // 3. Tombol Lihat Kontributor
                   _buildContributorsButton(context),
@@ -68,13 +68,13 @@ class _HomePageState extends State<HomePage> {
                     label: 'Time elapsed',
                     value: '33 days',
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   _buildInfoCard(
                     icon: Icons.pie_chart_outline_rounded,
                     label: 'Progress',
                     value: '21%',
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   
                   // 5. Kartu Lokasi
                   _buildLocationCard(),
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
       text: TextSpan(
         style: GoogleFonts.notoSans(
           fontSize: 28,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
           color: kDarkTextColor,
         ),
         children: [
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24.0),
+        borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.5),
@@ -190,8 +190,8 @@ class _HomePageState extends State<HomePage> {
             'Currently, EcoEnzyme is in active fermentation phase, characterized by the appearance of gas bubbles that occasionally rise to the surface. A fresh sour smell also began to emanate, indicating that the process of transforming organic waste into a multipurpose liquid is proceeding as it should.',
             textAlign: TextAlign.justify,
             style: GoogleFonts.notoSans(
-              fontSize: 10,
-              color: kDarkTextColor,
+              fontSize: 12,
+              color: Colors.black.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -203,11 +203,11 @@ class _HomePageState extends State<HomePage> {
    Widget _buildContributorsButton(BuildContext context) {
     return Material(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(15.0),
+      borderRadius: BorderRadius.circular(10.0),
       elevation: 4.0,
       shadowColor: Colors.grey.withValues(alpha: 0.5),
       child: InkWell(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         onTap: () {
           Navigator.push(
             context,
@@ -218,10 +218,10 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           decoration: BoxDecoration(
             color: Colors.transparent,
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 spreadRadius: 1,
                 blurRadius: 3,
               )
@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                 'View all contributors',
                 style: GoogleFonts.notoSans(
                   fontSize: 16,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                   color: kDarkTextColor,
                 ),
               ),
@@ -257,7 +257,7 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.5),
@@ -283,7 +283,7 @@ class _HomePageState extends State<HomePage> {
                 value,
                 style: GoogleFonts.notoSans(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                   color: kDarkTextColor,
                 ),
               ),
@@ -300,7 +300,7 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.5),
@@ -327,7 +327,7 @@ class _HomePageState extends State<HomePage> {
                   'Jl. Rw. Belong, RT.1/RW.9, Kb. Jeruk, Jakarta Barat',
                   style: GoogleFonts.notoSans(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     color: kDarkTextColor,
                   ),
                 ),
@@ -350,7 +350,7 @@ class _HomePageState extends State<HomePage> {
             iconColor: Colors.orange,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 20),
         Expanded(
           child: _buildMeasurementCard(
             icon: Icons.science_outlined,
@@ -369,10 +369,10 @@ class _HomePageState extends State<HomePage> {
     required Color iconColor,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.5),
@@ -391,7 +391,7 @@ class _HomePageState extends State<HomePage> {
             value,
             style: GoogleFonts.notoSans(
               fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               color: kDarkTextColor,
             ),
           ),
