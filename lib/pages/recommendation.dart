@@ -27,13 +27,13 @@ class _RecommendationState extends State<Recommendation> {
             Padding(
               padding: EdgeInsets.only(bottom: 16.0),
               child: Padding(
-                padding: EdgeInsets.only(left: 64.0, right: 64.0),
+                padding: EdgeInsets.symmetric(horizontal: 64.0),
                 child: Text("Time to give your Eco Enzyme some care!", style: GoogleFonts.notoSans(fontSize: 18), textAlign: TextAlign.center,)
               )
             ),
             Expanded( // Add this
               child: Padding(
-                padding: EdgeInsets.only(left: 24, right: 24),
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +43,7 @@ class _RecommendationState extends State<Recommendation> {
                         style: GoogleFonts.notoSans(fontSize: 16, fontWeight: FontWeight.w500),
                         textAlign: TextAlign.left,
                       ),
-                      Padding(padding: EdgeInsets.only(bottom: 8.0)),
+                      const SizedBox(height: 16),
                       RecommendationCard(
                         title: "Inspect for mold growth.",
                         points: 3,
@@ -54,7 +54,7 @@ class _RecommendationState extends State<Recommendation> {
                           'points': 3,
                         }),
                       ),
-                      Padding(padding: EdgeInsets.only(bottom: 20.0)),
+                      const SizedBox(height: 20),
                       RecommendationCard(
                         title: "Add 2L of Clean Water.",
                         points: 5,
@@ -65,7 +65,7 @@ class _RecommendationState extends State<Recommendation> {
                           'points': 5,
                         }),
                       ),
-                      Padding(padding: EdgeInsets.only(bottom: 20.0)),
+                      const SizedBox(height: 20),
                       RecommendationCard(
                         title: "Add 500gr of Brown Sugar.",
                         points: 6,
@@ -76,7 +76,7 @@ class _RecommendationState extends State<Recommendation> {
                           'points': 6,
                         }),
                       ),
-                      Padding(padding: EdgeInsets.only(bottom: 20.0)),
+                      const SizedBox(height: 20),
                       RecommendationCard(
                         title: "Check for gas buildup.",
                         points: 3,
@@ -93,6 +93,21 @@ class _RecommendationState extends State<Recommendation> {
               ),
             ),
           ]
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Add a new task', // Descriptive label for accessibility
+        onPressed: () {
+          // Define your action, like opening a new task screen
+          Navigator.pushNamed(context, '/filltodo');
+        },
+        backgroundColor: primary, // or use `primary` from your theme
+        shape: const CircleBorder(),
+        elevation: 0,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white, // transparent icon doesn't make sense visually
+          size: 32,
         ),
       ),
 
