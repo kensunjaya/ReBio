@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rebio/pages/home.dart';
+import 'package:rebio/pages/profile.dart';
 import 'package:rebio/pages/recommendation.dart';
 import 'package:rebio/theme/constants.dart';
 
@@ -17,8 +18,8 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const HomePage(),
     const Recommendation(),
-    const Center(child: Text('History')),
-    const Center(child: Text('Profile')),
+    const Center(child: Text("Replace this with HistoryPage() in 'components/BottomNavbar.dart'",)),
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

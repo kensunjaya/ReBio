@@ -35,15 +35,6 @@ class _HomePageState extends State<HomePage> {
   //   _username = '$_username!'.replaceRange(0, 1, _username![0].toUpperCase());
   // }
 
-  // Fungsi logout yang sudah ada
-  void logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    // Pastikan Anda memiliki route '/login' di main.dart
-    if (mounted) {
-       Navigator.pushReplacementNamed(context, '/login');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,16 +83,6 @@ class _HomePageState extends State<HomePage> {
                   // 6. Baris Info Temperatur dan pH
                   _buildMeasurementRow(),
                 ],
-              ),
-            ),
-            // Tombol Logout di pojok kanan atas
-            Positioned(
-              top: 10,
-              right: 10,
-              child: IconButton(
-                icon: const Icon(Icons.logout, color: kDarkTextColor),
-                onPressed: () => logout(context),
-                tooltip: 'Logout',
               ),
             ),
           ],
