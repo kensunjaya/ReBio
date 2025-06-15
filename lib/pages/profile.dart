@@ -55,14 +55,14 @@ class _ProfilePageState extends State<ProfilePage> {
               "userexample.gmail.com",
               style: GoogleFonts.notoSans(
                 fontSize: 14,
-                color: Colors.grey,
+                color: Colors.black.withValues(alpha: 0.5),
               ) ,
             ),
             Text(
               "+62 895310410118",
               style: GoogleFonts.notoSans(
                 fontSize: 14,
-                color: Colors.grey,
+                color: Colors.black.withValues(alpha: 0.5),
               ) ,
             ),
             SizedBox(height: 16),
