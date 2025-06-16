@@ -31,6 +31,13 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       return;
     }
+    // Terms & Privacy Policy Validation
+    if (!_acceptTerms){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("You must accept the Terms & Privacy Policy"))
+      );
+      return;
+    }
 
     try {
       await _auth.createUserWithEmailAndPassword(
