@@ -7,6 +7,7 @@ import 'package:rebio/pages/home.dart';
 import 'package:rebio/pages/login.dart';
 import 'package:rebio/pages/recommendation.dart';
 import 'package:rebio/pages/register.dart';
+import 'package:rebio/pages/splash.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:rebio/widget_tree.dart';
 
@@ -43,6 +44,7 @@ class ReBio extends StatelessWidget {
         '/filltodo': (context) => Filltodo(), // Placeholder for filltodo page
         '/mainscreen': (context) => MainScreen(),
         '/history': (context) => HistoryPage(),
+        '/splash': (context) => SplashPage(),
       },
     );
   }

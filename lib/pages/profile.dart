@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Logged out successfully! Please log in again.")),
       );
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/splash');
     }
   }
 
