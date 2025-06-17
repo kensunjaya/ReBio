@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool isLoading = false;
 
   Future<void> login(BuildContext context) async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
@@ -30,6 +31,9 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     try {
+      setState(() {
+        isLoading = true;
+      });
       await Auth().signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
@@ -56,6 +60,10 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An unexpected error occured.')),
       );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -117,6 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                   CustomButton(
                     text: "Log in", 
                     onPressed: () => login(context),
+                    disabled: isLoading,
                     verticalPadding: 18,
                     backgroundColor: secondary,
                   ),
@@ -190,13 +199,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   )
-                  
                 ],
               )
             )
           )
-        )
-        ,
+        ),
       ),
     );
   }

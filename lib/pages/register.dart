@@ -20,6 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final usernameController = TextEditingController();
   bool _acceptTerms = false;
   bool _obscurePassword = true;
+  bool isLoading = false;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -38,8 +39,11 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       return;
     }
-
+    
     try {
+      setState(() {
+        isLoading = true;
+      });
       await _auth.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
@@ -66,6 +70,14 @@ class _RegisterPageState extends State<RegisterPage> {
       };
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred.')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -157,6 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   CustomButton(
                     text: "Create Account",
                     onPressed: () => registerUser(context),
+                    disabled: isLoading,
                     verticalPadding: 16,
                     backgroundColor: secondary,
                   ),
