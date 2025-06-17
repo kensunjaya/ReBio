@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rebio/components/AppLoadingIndicator.dart';
 import 'package:rebio/utility/firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rebio/pages/contributors.dart';
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   User? _user;
   late CloudFirestoreService service;
   String _username = '';
+  bool isLoading = true;
   late Map<String, dynamic>? userData = {};
   late String greetingMessage;
 
@@ -56,12 +58,21 @@ class _HomePageState extends State<HomePage> {
       }
     } catch (e) {
       print("Error fetching user data: $e");
+    } finally {
+      setState(() {
+        isLoading = false; // Set loading ke false setelah data diambil
+      });
     }
   }
 
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        body: LoadingIndicator()
+      );
+    }
     return Scaffold(
       backgroundColor: bg, // Menggunakan warna dari konstanta
       body: SafeArea(

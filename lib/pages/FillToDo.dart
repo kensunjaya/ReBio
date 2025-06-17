@@ -17,15 +17,16 @@ class Filltodo extends StatefulWidget {
 }
 
 class _FilltodoState extends State<Filltodo> {
-  String? _selectedImage;
+  User? _user;
   final taskTitleController = TextEditingController();
   final taskDetailsController = TextEditingController();
   int? points = 2;
   String? icon = 'assets/user_defined_contribution.svg';
-  late CloudFirestoreService service;
-  bool enableEditingTaskTitle = true;
-  User? _user;
+  String? _selectedImage;
   String _username = 'Anonymous';
+  bool enableEditingTaskTitle = true;
+  bool isLoading = true;
+  late CloudFirestoreService service;
   late Map<String, dynamic>? userData = {};
 
   @override
@@ -58,7 +59,14 @@ class _FilltodoState extends State<Filltodo> {
         });
       }
     } catch (e) {
-      print("Error fetching user data: $e");
+      Navigator.pushReplacementNamed(context, '/login');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Session expired. Please log in again.")),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -67,12 +75,15 @@ class _FilltodoState extends State<Filltodo> {
   // add contribution function
 
   Future<void> submitData() async {
-    if (taskTitleController.text.isEmpty || taskDetailsController.text.isEmpty) {
+    if (taskTitleController.text.isEmpty || taskDetailsController.text.isEmpty || _selectedImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please fill in all required fields!')),
       );
       return;
     }
+    setState(() {
+      isLoading = true;
+    });
     bool success = await service.addContribution('locations', '1a', {
       'title': taskTitleController.text,
       'details': taskDetailsController.text,
@@ -84,6 +95,9 @@ class _FilltodoState extends State<Filltodo> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Something went wrong. Please try again later.')),
       );
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
 
@@ -284,6 +298,7 @@ class _FilltodoState extends State<Filltodo> {
                     Padding(padding: EdgeInsets.only(bottom: 32.0)),
                     CustomButton(
                       text: "Submit your work", 
+                      disabled: isLoading,
                       onPressed: () async {
                         await submitData();
                       },

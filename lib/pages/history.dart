@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rebio/components/AppLoadingIndicator.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,6 +22,7 @@ class _HistoryPageState extends State<HistoryPage> {
   late List contributions = [];
   late Map<String, dynamic>? locationData = {};
   Map<String, List<Map<String, dynamic>>> groupedContributions = {};
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -69,11 +71,23 @@ class _HistoryPageState extends State<HistoryPage> {
       }
     } catch (e) {
       print("Error fetching location data: $e");
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        backgroundColor: bg,
+        body: LoadingIndicator()
+      );
+    }
     return Scaffold(
       backgroundColor: bg,
       body: Padding(

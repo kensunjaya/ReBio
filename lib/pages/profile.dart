@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rebio/components/AppLoadingIndicator.dart';
 import 'package:rebio/components/CustomButton.dart';
 import 'package:rebio/components/UserStatisticsText.dart';
 import 'package:rebio/theme/constants.dart';
@@ -20,6 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String _username = '';
   String _email = '';
   late Map<String, dynamic>? userData = {};
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -42,10 +44,17 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } catch (e) {
       print("Error fetching user data: $e");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   void logout(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
     await FirebaseAuth.instance.signOut();
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -57,6 +66,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        backgroundColor: bg,
+        body: LoadingIndicator()
+      );
+    }
     return Scaffold(
       backgroundColor: bg,
       body: SingleChildScrollView(
@@ -154,7 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: 24),
-            CustomButton(text: "Log out", onPressed: () => logout(context), backgroundColor: danger)
+            CustomButton(text: "Log out", disabled: false, onPressed: () => logout(context), backgroundColor: danger)
           ],
         )
       )
