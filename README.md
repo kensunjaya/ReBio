@@ -20,16 +20,35 @@ ReBio is a mobile application built with Flutter and Firebase for Eco-Enzyme Mon
 ## 📸 Snapshots
 ### Register page UI
 
-![Screenshot 2025-06-14 195155](https://github.com/user-attachments/assets/b8438fd2-b375-40b9-b4db-e04c52df2ecf)
+![Register](https://github.com/user-attachments/assets/650604e5-4a00-4d06-8191-b57c7e314834)
 
 ### Login page UI
 
-![Screenshot 2025-06-14 195204](https://github.com/user-attachments/assets/54c6d533-471a-4479-bec2-e2241a8b2f52)
+![Login](https://github.com/user-attachments/assets/278a93d3-e42e-44c6-9dc4-3c1e6a029c9b)
 
 ### Home page UI
 
-![Screenshot 2025-06-14 195228](https://github.com/user-attachments/assets/c59b2478-48bd-4718-b26c-abf2649a456c)
+![Home](https://github.com/user-attachments/assets/055def16-ff5b-4424-89d3-d01800c9a281)
 
+### Recommendation Page UI
+
+![Recommendation](https://github.com/user-attachments/assets/4a3d2326-a384-4f06-8a1b-de7c83299ba4)
+
+### History Page UI
+
+![History](https://github.com/user-attachments/assets/18dbbaca-b6c5-427f-9d86-66aecc7b1553)
+
+### Fill To Do Page UI
+
+![Fill To Do](https://github.com/user-attachments/assets/65c61b8e-7934-4bb4-ba9a-780d369753c3)
+
+### Profile Page UI
+
+![Profile](https://github.com/user-attachments/assets/36aa00ec-2735-40bf-ac1f-8c343b6f4e96)
+
+### Profile Others
+
+![Profile Others](https://github.com/user-attachments/assets/c97b97c7-0b09-4b5e-b198-418085dfb325)
 
 ## 📦 Setup
 1. Clone the repository:
