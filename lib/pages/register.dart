@@ -61,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
         const SnackBar(content: Text('Account created successfully')),
       );
 
-      Navigator.pop(context); // Go back to login
+      Navigator.pushReplacementNamed(context, '/login'); // Go back to login
     } on FirebaseAuthException catch (e) {
       String error = switch (e.code) {
         'email-already-in-use' => 'The email is already in use.',
