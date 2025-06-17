@@ -51,6 +51,7 @@ class _DetailsPageState extends State<DetailsPage> {
         points = userData?['profile']?['points']?.toString() ?? '0';
         unredeemedPoints = userData?['profile']?['unredeemedPoints']?.toString() ?? '0';
         String lastContributionRaw = userData?['profile']?['lastContribution']?.toString() ?? 'N/A';
+        lastContribution = 'N/A';
 
         if (lastContributionRaw.isNotEmpty) {
           try {
