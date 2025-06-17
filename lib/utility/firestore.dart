@@ -40,7 +40,10 @@ class CloudFirestoreService {
         return userList;
       })
       // ignore: invalid_return_type_for_catch_error
-      .catchError((error) => print(error));
+      .catchError((error) {
+        print("Failed to fetch users: $error");
+        return [];
+      });
   }
 
   Future<void> update(String collection, String docId, Map<String, dynamic> data) async {
