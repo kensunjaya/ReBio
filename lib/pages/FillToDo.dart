@@ -108,6 +108,7 @@ class _FilltodoState extends State<Filltodo> {
     await service.editProfile(_user!.email.toString(), 'points', currentPoint + points);
     await service.editProfile(_user!.email.toString(), 'unredeemedPoints', currentUnredeemedPoints + points);
     await service.editProfile(_user!.email.toString(), 'contributions', currentContributions + 1);
+    await service.editProfile(_user!.email.toString(), 'lastContribution', DateTime.now().toIso8601String());
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Thank you! Your contribution has been recorded!')),

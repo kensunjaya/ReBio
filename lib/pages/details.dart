@@ -1,22 +1,83 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rebio/components/AppLoadingIndicator.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rebio/utility/firestore.dart';
+import 'package:intl/intl.dart';
 
 const Color kDarkTextColor = Colors.black87;
 
-class DetailsPage extends StatelessWidget {
+class DetailsPage extends StatefulWidget {
   final String name;
   final int contribution;
+  final String email;
 
   const DetailsPage({
     super.key,
     required this.name,
     required this.contribution,
+    required this.email,
   });
 
   @override
+  State<DetailsPage> createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends State<DetailsPage> {
+  late CloudFirestoreService service;
+  bool isLoading = true;
+  late Map<String, dynamic>? userData = {};
+  late String _username;
+  late String totalContributions;
+  late String points;
+  late String unredeemedPoints;
+  late String lastContribution;
+
+  @override
+  void initState() {
+    super.initState();
+    service = CloudFirestoreService(FirebaseFirestore.instance);
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      userData = await service.get('users', widget.email);
+      setState(() {
+        _username = userData?['profile']?['username']?.toString() ?? 'User';
+        totalContributions = userData?['profile']?['contributions']?.toString() ?? '0';
+        points = userData?['profile']?['points']?.toString() ?? '0';
+        unredeemedPoints = userData?['profile']?['unredeemedPoints']?.toString() ?? '0';
+        String lastContributionRaw = userData?['profile']?['lastContribution']?.toString() ?? 'N/A';
+
+        if (lastContributionRaw.isNotEmpty) {
+          try {
+            DateTime dt = DateTime.parse(lastContributionRaw);
+            lastContribution = DateFormat('dd MMM yyyy').format(dt);
+          } catch (e) {
+            lastContribution = 'N/A';
+          }
+        }
+      });
+    } catch (e) {
+      print("Error fetching user data: $e");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        backgroundColor: bg,
+        body: LoadingIndicator()
+      );
+    }
     return Scaffold(
       backgroundColor: bg, 
       appBar: AppBar(
@@ -50,7 +111,7 @@ class DetailsPage extends StatelessWidget {
               const SizedBox(height: 20),
               // 2. Nama Pengguna
                Text(
-                name, // <-- Gunakan data dari constructor
+                _username, // <-- Gunakan data dari constructor
                 style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -87,22 +148,22 @@ class DetailsPage extends StatelessWidget {
                     _buildInfoRow(
                       icon: Icons.auto_awesome_outlined,
                       label: 'Total Contributions',
-                      value: contribution.toString(), // <-- Gunakan data dari constructor
+                      value: totalContributions, // <-- Gunakan data dari constructor
                     ),
                     _buildInfoRow(
                       icon: Icons.star_border_rounded,
                       label: 'Points Earned',
-                      value: '18', // (Data masih statis)
+                      value: points, // (Data masih statis)
                     ),
                     _buildInfoRow(
-                      icon: Icons.brightness_high_outlined,
+                      icon: Icons.hotel_class_outlined,
                       label: 'Unredeemed Points',
-                      value: '7', // (Data masih statis)
+                      value: unredeemedPoints, // (Data masih statis)
                     ),
                     _buildInfoRow(
                       icon: Icons.calendar_today_outlined,
                       label: 'Last Contribution',
-                      value: 'Yesterday', // (Data masih statis)
+                      value: lastContribution, // (Data masih statis)
                     ),
                   ],
                 ),

@@ -1,24 +1,58 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rebio/components/AppLoadingIndicator.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:rebio/pages/details.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rebio/utility/firestore.dart';
 
 const Color kDarkTextColor = Colors.black87;
 
-class ContributorsPage extends StatelessWidget {
+class ContributorsPage extends StatefulWidget {
   const ContributorsPage({super.key});
 
+  @override
+  State<ContributorsPage> createState() => _ContributorsPageState();
+}
+
+class _ContributorsPageState extends State<ContributorsPage> {
+  late CloudFirestoreService service;
   // Data dummy untuk para kontributor
-  // Anda bisa mengganti ini dengan data dari database (misal: Firestore)
-  final List<Map<String, dynamic>> contributors = const [
-    {'name': 'Sherly', 'contribution': 7},
-    {'name': 'Kenneth', 'contribution': 12},
-    {'name': 'Novellina', 'contribution': 8},
-    {'name': 'Deever', 'contribution': 5},
-  ];
+  late List<Map<String, dynamic>> contributors;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    service = CloudFirestoreService(FirebaseFirestore.instance);
+    fetchContributors();
+  }
+
+  Future<void> fetchContributors() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      contributors = await service.fetchUsers();
+    } catch (e) {
+      print("Error fetching contributors: $e");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        backgroundColor: bg,
+        body: Center(
+          child: LoadingIndicator(),
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
@@ -49,13 +83,40 @@ class ContributorsPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Text(
-            "RT.1/RW.9's Ecoenzym",
-            style: GoogleFonts.notoSans(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: kDarkTextColor,
-            ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                Text(
+                  "Contributors of ",
+                  style: GoogleFonts.notoSans(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: kDarkTextColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  "RT.1/RW.9",
+                  style: GoogleFonts.notoSans(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: primary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  " eco enzyme production",
+                  style: GoogleFonts.notoSans(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: kDarkTextColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            )
           ),
           const SizedBox(height: 30),
 
@@ -66,9 +127,13 @@ class ContributorsPage extends StatelessWidget {
               itemCount: contributors.length,
               itemBuilder: (context, index) {
                 final contributor = contributors[index];
+                if (contributor['profile']['contributions'] == null) {
+                  return const SizedBox.shrink();
+                }
                 return _ContributorCard(
-                  name: contributor['name'],
-                  contribution: contributor['contribution'],
+                  name: contributor['profile']['username'] ?? 'Unknown',
+                  contribution: contributor['profile']['contributions'] ?? 0,
+                  email: contributor['profile']['email'], // Email sebagai key
                 );
               },
             ),
@@ -82,11 +147,14 @@ class ContributorsPage extends StatelessWidget {
 // Widget privat untuk setiap kartu kontributor agar kode lebih rapi
 class _ContributorCard extends StatelessWidget {
   final String name;
+  final String? email; // acts as key to fetch the contributor's details
   final int contribution;
+
 
   const _ContributorCard({
     required this.name,
     required this.contribution,
+    this.email,
   });
 
   @override
@@ -97,7 +165,7 @@ class _ContributorCard extends StatelessWidget {
       elevation: 3,
       shadowColor: Colors.grey.withValues(alpha: 0.5),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -125,12 +193,19 @@ class _ContributorCard extends StatelessWidget {
           color: Colors.grey,
         ),
         onTap: () {
+          if (email == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('No details available for $name')),
+            );
+            return;
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => DetailsPage(
                 name: name,
                 contribution: contribution,
+                email: email!,
               ),
             ),
           );

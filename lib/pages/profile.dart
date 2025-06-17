@@ -7,6 +7,7 @@ import 'package:rebio/components/CustomButton.dart';
 import 'package:rebio/components/UserStatisticsText.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:rebio/utility/firestore.dart';
+import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -22,6 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String _email = '';
   late Map<String, dynamic>? userData = {};
   bool isLoading = true;
+  late String lastContribution = 'N/A';
 
   @override
   void initState() {
@@ -40,6 +42,16 @@ class _ProfilePageState extends State<ProfilePage> {
           _email = _user!.email ?? 'No email';
           // Membuat huruf pertama menjadi kapital
           _username = _username.replaceRange(0, 1, _username[0].toUpperCase());
+          String lastContributionRaw = userData?['profile']?['lastContribution']?.toString() ?? 'N/A';
+
+          if (lastContributionRaw.isNotEmpty) {
+            try {
+              DateTime dt = DateTime.parse(lastContributionRaw);
+              lastContribution = DateFormat('dd MMM yyyy').format(dt);
+            } catch (e) {
+              lastContribution = 'N/A';
+            }
+          }
         });
       }
     } catch (e) {
@@ -136,27 +148,35 @@ class _ProfilePageState extends State<ProfilePage> {
                       UserStatisticsText(
                         label: "Total Contributions",
                         value: userData?['profile']?['contributions']?.toString() ?? "0",
-                        icon: Icon(Icons.group_work_outlined, color: Colors.grey, size: 24),
+                        icon: Icon(Icons.auto_awesome_outlined, color: Colors.grey, size: 24),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
                       UserStatisticsText(
                         label: "Points earned",
                         value: userData?['profile']?['points']?.toString() ?? "0",
                         icon: Icon(Icons.star_border_outlined, color: Colors.grey, size: 24),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
                       UserStatisticsText(
                         label: "Unredeemed Points",
                         value: userData?['profile']?['unredeemedPoints']?.toString() ?? "0",
                         icon: Icon(Icons.hotel_class_outlined, color: Colors.grey, size: 24),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
                       UserStatisticsText(
                         label: "Joined",
-                        value: _user?.metadata.creationTime?.toLocal().toString().split(' ')[0] ?? "2025-05-05",
+                        value: _user?.metadata.creationTime != null
+                          ? DateFormat('dd MMM yyyy').format(_user!.metadata.creationTime!.toLocal())
+                          : "05 May 2025",
                         icon: Icon(Icons.calendar_month_outlined, color: Colors.grey, size: 24),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
+                      UserStatisticsText(
+                        label: "Last Contribution",
+                        value: lastContribution,
+                        icon: Icon(Icons.calendar_today_outlined, color: Colors.grey, size: 24),
+                      ),
+                      const SizedBox(height: 16),
                       UserStatisticsText(
                         label: "Address",
                         value: "Jl. Rw. Belong No.4, RT.1/RW.9, Kb. Jeruk, Jakarta Barat",
