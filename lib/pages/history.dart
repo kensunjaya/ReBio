@@ -82,7 +82,6 @@ class _HistoryPageState extends State<HistoryPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildHeader(context),
-            const SizedBox(height: 16),
             Expanded(child: _buildHistoryList()),
           ],
         ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,11 +24,20 @@ class _HomePageState extends State<HomePage> {
   late CloudFirestoreService service;
   String _username = '';
   late Map<String, dynamic>? userData = {};
+  late String greetingMessage;
 
   @override
   void initState() {
     super.initState();
     service = CloudFirestoreService(FirebaseFirestore.instance);
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      greetingMessage = 'Good Morning';
+    } else if (hour < 18) {
+      greetingMessage = 'Good Afternoon';
+    } else {
+      greetingMessage = 'Good Evening';
+    }
     fetchUserData();
   }
 
@@ -59,8 +70,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Spacer untuk memberi ruang bagi tombol logout
-                  const SizedBox(height: 40), 
+                  const SizedBox(height: 20), 
 
                   // 1. Teks Sambutan (Header)
                   _buildHeader(),
@@ -103,7 +113,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Widget untuk header "Hello, Username!"
+  // Widget untuk header "Greeting, Username!"
   Widget _buildHeader() {
     return RichText(
       text: TextSpan(
@@ -113,10 +123,21 @@ class _HomePageState extends State<HomePage> {
           color: kDarkTextColor,
         ),
         children: [
-          const TextSpan(text: 'Hello, '),
+          TextSpan(
+            text: '$greetingMessage,\n', 
+            style: GoogleFonts.notoSans(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: kDarkTextColor, // Menggunakan warna abu-abu untuk teks sapaan
+            )
+          ),
           TextSpan(
             text: _username,
-            style: const TextStyle(color: primary),
+            style: GoogleFonts.notoSans(
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
+              color: primary, // Menggunakan warna primer dari tema
+            )
           ),
         ],
       ),
@@ -177,20 +198,13 @@ class _HomePageState extends State<HomePage> {
                 width: 90,
                 height: 90,
                 decoration: BoxDecoration(
-                  color: primary.withOpacity(0.4),
+                  color: primary.withValues(alpha: 0.4),
                   shape: BoxShape.circle,
                 ),
-                child: Center(
+                child: ClipOval(
                   child: Image.asset(
-                    'assets/images/ecoenzyme.png',
-                    width: 50,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(
-                        Icons.broken_image_rounded,
-                        color: secondary,
-                        size: 40,
-                      );
-                    },
+                    'assets/images/ecoenzyme.png', // Ganti dengan path gambar yang sesuai
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
