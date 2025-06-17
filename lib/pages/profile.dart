@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (_user != null) {
         userData = await service.get('users', _user!.email.toString());
         setState(() {
-          _username = userData!['profile']!['username'] ?? 'User';
+          _username = userData?['profile']?['username']?.toString() ?? 'User';
           _email = _user!.email ?? 'No email';
           // Membuat huruf pertama menjadi kapital
           _username = _username.replaceRange(0, 1, _username[0].toUpperCase());
