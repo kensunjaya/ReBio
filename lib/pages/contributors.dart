@@ -34,16 +34,17 @@ class ContributorsPage extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
           // 1. Bagian Header (Logo dan Judul)
-          CircleAvatar(
-            radius: 55, // Ukuran total lingkaran
-            backgroundColor: primary.withValues(alpha: 0.4), // Warna latar belakang/bingkai
-            child: ClipOval( // Memastikan gambar di dalamnya juga berbentuk lingkaran
-              child: Padding(
-                padding: const EdgeInsets.all(10.0), // Beri jarak 10 poin di sekeliling gambar
-                child: Image.asset(
-                  'assets/images/ecoenzyme.png',
-                  fit: BoxFit.cover, // Memastikan gambar mengisi ruang yang lebih kecil
-                ),
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              color: primary.withValues(alpha: 0.4),
+              shape: BoxShape.circle,
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/ecoenzyme.png', // Ganti dengan path gambar yang sesuai
+                fit: BoxFit.cover,
               ),
             ),
           ),
