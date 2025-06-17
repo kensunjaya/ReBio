@@ -120,25 +120,25 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       UserStatisticsText(
                         label: "Total Contributions",
-                        value: "12",
+                        value: userData?['profile']?['contributions']?.toString() ?? "0",
                         icon: Icon(Icons.group_work_outlined, color: Colors.grey, size: 24),
                       ),
                       const SizedBox(height: 8),
                       UserStatisticsText(
                         label: "Points earned",
-                        value: "51",
+                        value: userData?['profile']?['points']?.toString() ?? "0",
                         icon: Icon(Icons.star_border_outlined, color: Colors.grey, size: 24),
                       ),
                       const SizedBox(height: 8),
                       UserStatisticsText(
                         label: "Unredeemed Points",
-                        value: "17",
+                        value: userData?['profile']?['unredeemedPoints']?.toString() ?? "0",
                         icon: Icon(Icons.hotel_class_outlined, color: Colors.grey, size: 24),
                       ),
                       const SizedBox(height: 8),
                       UserStatisticsText(
                         label: "Joined",
-                        value: "10 May 2025",
+                        value: _user?.metadata.creationTime?.toLocal().toString().split(' ')[0] ?? "2025-05-05",
                         icon: Icon(Icons.calendar_month_outlined, color: Colors.grey, size: 24),
                       ),
                       const SizedBox(height: 8),

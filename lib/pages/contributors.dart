@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:rebio/pages/details.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color kDarkTextColor = Colors.black87;
@@ -12,10 +11,10 @@ class ContributorsPage extends StatelessWidget {
   // Data dummy untuk para kontributor
   // Anda bisa mengganti ini dengan data dari database (misal: Firestore)
   final List<Map<String, dynamic>> contributors = const [
-    {'name': 'John Doe', 'contribution': 5},
-    {'name': 'Quinn Park', 'contribution': 12},
-    {'name': 'Elliot Rivera', 'contribution': 8},
-    {'name': 'Casey Blake', 'contribution': 11},
+    {'name': 'Sherly', 'contribution': 7},
+    {'name': 'Kenneth', 'contribution': 12},
+    {'name': 'Novellina', 'contribution': 8},
+    {'name': 'Deever', 'contribution': 5},
   ];
 
   @override
@@ -37,7 +36,7 @@ class ContributorsPage extends StatelessWidget {
           // 1. Bagian Header (Logo dan Judul)
           CircleAvatar(
             radius: 55, // Ukuran total lingkaran
-            backgroundColor: primary.withOpacity(0.4), // Warna latar belakang/bingkai
+            backgroundColor: primary.withValues(alpha: 0.4), // Warna latar belakang/bingkai
             child: ClipOval( // Memastikan gambar di dalamnya juga berbentuk lingkaran
               child: Padding(
                 padding: const EdgeInsets.all(10.0), // Beri jarak 10 poin di sekeliling gambar

@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rebio/utility/firestore.dart';
+import 'package:intl/intl.dart';
+
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -11,6 +16,62 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  User? _user;
+  late CloudFirestoreService service;
+  late List contributions = [];
+  late Map<String, dynamic>? locationData = {};
+  Map<String, List<Map<String, dynamic>>> groupedContributions = {};
+
+  @override
+  void initState() {
+    super.initState();
+    service = CloudFirestoreService(FirebaseFirestore.instance);
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      _user = FirebaseAuth.instance.currentUser;
+      if (_user != null) {
+        locationData = await service.get('locations', '1a');
+        List<dynamic> rawContributions = locationData!['contributions'] ?? [];
+
+        for (var item in rawContributions) {
+          if (item['timestamp'] == null) continue;
+
+          Timestamp ts = item['timestamp'];
+          DateTime date = ts.toDate();
+
+          final now = DateTime.now();
+          final today = DateTime(now.year, now.month, now.day);
+          final itemDate = DateTime(date.year, date.month, date.day);
+          final diff = today.difference(itemDate).inDays;
+
+          String key;
+          if (diff == 0) {
+            key = 'Today';
+          } else if (diff == 1) {
+            key = 'Yesterday';
+          } else {
+            key = DateFormat('d MMMM yyyy').format(itemDate);
+          }
+
+          if (!groupedContributions.containsKey(key)) {
+            groupedContributions[key] = [];
+          }
+
+          groupedContributions[key]!.add(item);
+        }
+
+        setState(() {});
+      } else {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    } catch (e) {
+      print("Error fetching location data: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,54 +116,39 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Widget _buildHistoryList() {
+    final sortedKeys = groupedContributions.keys.toList()
+      ..sort((a, b) {
+        if (a == 'Today') return -1;
+        if (b == 'Today') return 1;
+        if (a == 'Yesterday') return -1;
+        if (b == 'Yesterday') return 1;
+
+        final format = DateFormat('d MMMM yyyy');
+        final dateA = format.parse(a);
+        final dateB = format.parse(b);
+        return dateB.compareTo(dateA); // descending
+      });
+
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-      children: [
-        _buildDateSection('15 May'),
-        _buildHistoryCard(
-          svgAsset: 'assets/mold.svg',
-          title: 'Inspect for mold growth.',
-          description:
-              'Contributed to maintaining a healthy fermentation process by checking for contamination.',
-          name: 'Sedyawati',
-        ),
-        _buildHistoryCard(
-          svgAsset: 'assets/brown_sugar.svg',
-          title: 'Add 200gr of Brown Sugar.',
-          description:
-              'Fed the beneficial microbes with a sugar source to support fermentation.',
-          name: 'Sunjaya',
-        ),
-        _buildHistoryCard(
-          svgAsset: 'assets/mold.svg',
-          title: 'Donated 1.5 kg of fruit peels.',
-          description:
-              'Contributed organic waste to support sustainable enzyme production and reduce landfill load.',
-          name: 'Oktavia',
-        ),
-        const SizedBox(height: 20),
-        _buildDateSection('Yesterday'),
-        _buildHistoryCard(
-          svgAsset: 'assets/gas.svg',
-          title: 'Checked for gas buildup.',
-          description:
-              'Released excess pressure to prevent container damage and ensure safety.',
-          name: 'Pak Budi',
-        ),
-        _buildHistoryCard(
-          svgAsset: 'assets/mold.svg',
-          title: 'Collected dry leaves from garden.',
-          description:
-              'Helped balance the carbon-nitrogen ratio for optimal fermentation.',
-          name: 'Sintia',
-        ),
-      ],
+      children: sortedKeys.expand((dateKey) {
+        final items = groupedContributions[dateKey]!;
+        return [
+          _buildDateSection(dateKey),
+          ...items.map((contribution) => _buildHistoryCard(
+                svgAsset: contribution['icon'] ?? 'assets/icons/default.svg',
+                title: contribution['title'] ?? 'Unknown Title',
+                description: contribution['details'] ?? 'No description available.',
+                name: contribution['username'] ?? 'Anonymous',
+              )),
+        ];
+      }).toList(),
     );
   }
 
   Widget _buildDateSection(String date) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 8.0, top: 12.0),
       child: Text(
         date,
         style: GoogleFonts.notoSans(fontSize: 16, fontWeight: FontWeight.w500),
