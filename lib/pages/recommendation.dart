@@ -22,13 +22,22 @@ class _RecommendationState extends State<Recommendation> {
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: 8.0),
-              child: Text("Hello, Username!", style: GoogleFonts.notoSans(fontSize: 24, fontWeight: FontWeight.w600)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Small ", style: GoogleFonts.notoSans(fontSize: 24, fontWeight: FontWeight.w600)),
+                  Text("actions", style: GoogleFonts.notoSans(fontSize: 24, fontWeight: FontWeight.w700, color: primary)),
+                  Text(", big ", style: GoogleFonts.notoSans(fontSize: 24, fontWeight: FontWeight.w600)),
+                  Text("impact", style: GoogleFonts.notoSans(fontSize: 24, fontWeight: FontWeight.w700, color: primary)),
+                  Text("!", style: GoogleFonts.notoSans(fontSize: 24, fontWeight: FontWeight.w600)),
+                ],
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 16.0),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 64.0),
-                child: Text("Time to give your Eco Enzyme some care!", style: GoogleFonts.notoSans(fontSize: 18), textAlign: TextAlign.center,)
+                child: Text("Time to give your Eco Enzyme some treatments!", style: GoogleFonts.notoSans(fontSize: 18), textAlign: TextAlign.center,)
               )
             ),
             Expanded( // Add this
@@ -39,7 +48,7 @@ class _RecommendationState extends State<Recommendation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Today",
+                        "Today's tasks",
                         style: GoogleFonts.notoSans(fontSize: 16, fontWeight: FontWeight.w500),
                         textAlign: TextAlign.left,
                       ),
@@ -52,6 +61,7 @@ class _RecommendationState extends State<Recommendation> {
                         onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
                           'taskTitle': 'Inspect for mold growth',
                           'points': 3,
+                          'icon': 'assets/mold.svg',
                         }),
                       ),
                       const SizedBox(height: 20),
@@ -63,6 +73,7 @@ class _RecommendationState extends State<Recommendation> {
                         onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
                           'taskTitle': 'Add 2L of Clean Water',
                           'points': 5,
+                          'icon': 'assets/water.svg',
                         }),
                       ),
                       const SizedBox(height: 20),
@@ -74,17 +85,31 @@ class _RecommendationState extends State<Recommendation> {
                         onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
                           'taskTitle': 'Add 500gr of Brown Sugar',
                           'points': 6,
+                          'icon': 'assets/brown_sugar.svg',
                         }),
                       ),
                       const SizedBox(height: 20),
                       RecommendationCard(
                         title: "Check for gas buildup.",
                         points: 3,
-                        timeAgo: "12 hours ago",
+                        timeAgo: "9 hours ago",
                         svgAsset: 'assets/gas.svg',
                         onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
                           'taskTitle': 'Check for gas buildup',
                           'points': 3,
+                          'icon': 'assets/gas.svg',
+                        }),
+                      ),
+                      const SizedBox(height: 20),
+                      RecommendationCard(
+                        title: "Add fruit peels to the tank.",
+                        points: 5,
+                        timeAgo: "11 hours ago",
+                        svgAsset: 'assets/fruit_peels.svg',
+                        onTap: () => Navigator.pushNamed(context, '/filltodo', arguments: {
+                          'taskTitle': 'Add fruit peels.',
+                          'points': 3,
+                          'icon': 'assets/fruit_peels.svg',
                         }),
                       )
                     ]
@@ -99,7 +124,7 @@ class _RecommendationState extends State<Recommendation> {
         tooltip: 'Add a new task', // Descriptive label for accessibility
         onPressed: () {
           // Define your action, like opening a new task screen
-          Navigator.pushNamed(context, '/filltodo');
+          Navigator.pushReplacementNamed(context, '/filltodo');
         },
         backgroundColor: primary, // or use `primary` from your theme
         shape: const CircleBorder(),

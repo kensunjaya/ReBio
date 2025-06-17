@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rebio/components/CustomButton.dart';
 import 'package:rebio/components/CustomTextField.dart';
 import 'package:rebio/theme/constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rebio/utility/firestore.dart';
 import 'dart:io';
 
 class Filltodo extends StatefulWidget {
@@ -17,8 +20,13 @@ class _FilltodoState extends State<Filltodo> {
   String? _selectedImage;
   final taskTitleController = TextEditingController();
   final taskDetailsController = TextEditingController();
-  int? points;
+  int? points = 2;
+  String? icon = 'assets/user_defined_contribution.svg';
+  late CloudFirestoreService service;
   bool enableEditingTaskTitle = true;
+  User? _user;
+  String _username = 'Anonymous';
+  late Map<String, dynamic>? userData = {};
 
   @override
   void didChangeDependencies() {
@@ -28,8 +36,72 @@ class _FilltodoState extends State<Filltodo> {
       if (args.containsKey('taskTitle')) enableEditingTaskTitle = false;
       taskTitleController.text = (args['taskTitle'] as String?) ?? "";
       points = args['points'] as int?;
+      icon = args['icon'] as String?;
     }
   }
+
+  @override
+  void initState() {
+    super.initState();
+    service = CloudFirestoreService(FirebaseFirestore.instance);
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      _user = FirebaseAuth.instance.currentUser;
+      if (_user != null) {
+        userData = await service.get('users', _user!.email.toString());
+        setState(() {
+          _username = userData!['profile']!['username'] ?? 'User';
+          _username = _username.replaceRange(0, 1, _username[0].toUpperCase());
+        });
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
+
+
+
+  // add contribution function
+
+  Future<void> submitData() async {
+    if (taskTitleController.text.isEmpty || taskDetailsController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill in all required fields!')),
+      );
+      return;
+    }
+    bool success = await service.addContribution('locations', '1a', {
+      'title': taskTitleController.text,
+      'details': taskDetailsController.text,
+      'username': _username,
+      'icon': icon,
+      'timestamp': DateTime.now(),
+    });
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Something went wrong. Please try again later.')),
+      );
+      return;
+    }
+
+    var currentPoint = userData!['profile']?['points'] ?? 0;
+    var currentUnredeemedPoints = userData!['profile']?['unredeemedPoints'] ?? 0;
+    var currentContributions = userData!['profile']?['contributions'] ?? 0;
+
+    await service.editProfile(_user!.email.toString(), 'points', currentPoint + points);
+    await service.editProfile(_user!.email.toString(), 'unredeemedPoints', currentUnredeemedPoints + points);
+    await service.editProfile(_user!.email.toString(), 'contributions', currentContributions + 1);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Thank you! Your contribution has been recorded!')),
+    );
+    Navigator.pushReplacementNamed(context, '/mainscreen');
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -212,9 +284,9 @@ class _FilltodoState extends State<Filltodo> {
                     Padding(padding: EdgeInsets.only(bottom: 32.0)),
                     CustomButton(
                       text: "Submit your work", 
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }
+                      onPressed: () async {
+                        await submitData();
+                      },
                     )
                   ]
                 )

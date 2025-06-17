@@ -102,7 +102,7 @@ class DetailsPage extends StatelessWidget {
                     _buildInfoRow(
                       icon: Icons.calendar_today_outlined,
                       label: 'Last Contribution',
-                      value: '2 days ago', // (Data masih statis)
+                      value: 'Yesterday', // (Data masih statis)
                     ),
                   ],
                 ),

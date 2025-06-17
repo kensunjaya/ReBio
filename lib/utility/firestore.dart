@@ -50,4 +50,31 @@ class CloudFirestoreService {
       print("Failed to update document: $error");
     }
   }
+
+  Future<bool> addContribution(String collectionName, String docId, Map<String, dynamic> contribution) async {
+    try {
+      await db.collection(collectionName).doc(docId).update({
+        'contributions': FieldValue.arrayUnion([contribution]),
+      });
+      return true;
+    } catch (error) {
+      print("Failed to add contribution: $error");
+      return false;
+    }
+  }
+
+  Future<bool> editProfile(String userEmail, String key, dynamic value) async {
+    try {
+      final userDoc = db.collection('users').doc(userEmail);
+      await userDoc.set({
+        'profile': {
+          key: value,
+        }
+      }, SetOptions(merge: true)); // merge true to preserve existing fields
+      return true;
+    } catch (e) {
+      print('Error editing profile: $e');
+      return false;
+    }
+  }
 }
