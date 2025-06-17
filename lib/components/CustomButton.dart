@@ -42,6 +42,7 @@ class CustomButton extends StatelessWidget {
           style: GoogleFonts.notoSans(
             fontSize: fontSize,
             color: Colors.white,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

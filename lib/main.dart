@@ -27,6 +27,7 @@ class ReBio extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        scaffoldBackgroundColor: bg,
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: primary,
           selectionColor: primary.withValues(alpha: 0.5),

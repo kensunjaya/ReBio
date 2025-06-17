@@ -29,22 +29,21 @@ class CloudFirestoreService {
     }
   }
 
-  Future<List> fetchUsers(String s) {
+  Future<List<Map<String, dynamic>>> fetchUsers() {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-    List userList = [];
-    return users.get()
-      .then((QuerySnapshot snapshot) {
-        for (var doc in snapshot.docs) {
-          userList.add(doc.id);
-        }
-        return userList;
-      })
-      // ignore: invalid_return_type_for_catch_error
-      .catchError((error) {
-        print("Failed to fetch users: $error");
-        return [];
-      });
+    return users.get().then((QuerySnapshot snapshot) {
+      List<Map<String, dynamic>> userList = [];
+      for (var doc in snapshot.docs) {
+        final userData = doc.data() as Map<String, dynamic>;
+        userList.add(userData);
+      }
+      return userList;
+    }).catchError((error) {
+      print("Failed to fetch users: $error");
+      return <Map<String, dynamic>>[];
+    });
   }
+
 
   Future<void> update(String collection, String docId, Map<String, dynamic> data) async {
     try {

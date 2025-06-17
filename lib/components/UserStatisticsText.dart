@@ -13,21 +13,22 @@ class UserStatisticsText extends StatelessWidget {
     required this.label,
     required this.value,
     required this.icon,
-    this.fontSize = 16,
+    this.fontSize = 14,
     this.textColor = Colors.grey,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         icon,
-        const SizedBox(width: 8),
+        const SizedBox(width: 16),
         Text(
           label,
           style: GoogleFonts.notoSans(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w500,
             color: textColor,
           ),
