@@ -36,9 +36,11 @@ class _HomePageState extends State<HomePage> {
       if (_user != null) {
         userData = await service.get('users', _user!.email.toString());
         setState(() {
-          _username = userData!['profile']!['username'] ?? 'User';
+          _username = userData?['profile']?['username']?.toString() ?? 'User';
           // Membuat huruf pertama menjadi kapital
-          _username = '$_username!'.replaceRange(0, 1, _username[0].toUpperCase());
+          if (_username.isNotEmpty) {
+            _username = '$_username!'.replaceRange(0, 1, _username[0].toUpperCase());
+          }
         });
       }
     } catch (e) {
