@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rebio/components/CustomButton.dart';
 import 'package:rebio/components/CustomTextField.dart';
@@ -195,9 +196,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Image.asset(
-                          'assets/images/google_logo.png',
-                          height: 16,                    
+                        child: SvgPicture.asset(
+                          'assets/images/google-icon.svg',
+                          width: 14,
+                          height: 14,
                         ),
                       ),
                       OutlinedButton(

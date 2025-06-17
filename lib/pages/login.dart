@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rebio/auth.dart'; // Replace with your actual auth path
 import 'package:rebio/components/CustomButton.dart';
@@ -154,9 +155,10 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Image.asset(
-                          'assets/images/google_logo.png',
-                          height: 16,                    
+                        child: SvgPicture.asset(
+                          'assets/images/google-icon.svg',
+                          width: 14,
+                          height: 14,
                         ),
                       ),
                       OutlinedButton(
