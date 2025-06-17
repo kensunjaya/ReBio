@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rebio/components/CustomButton.dart';
 import 'package:rebio/components/UserStatisticsText.dart';
 import 'package:rebio/theme/constants.dart';
+import 'package:rebio/utility/firestore.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,6 +15,35 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  User? _user;
+  late CloudFirestoreService service;
+  String _username = '';
+  String _email = '';
+  late Map<String, dynamic>? userData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    service = CloudFirestoreService(FirebaseFirestore.instance);
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      _user = FirebaseAuth.instance.currentUser;
+      if (_user != null) {
+        userData = await service.get('users', _user!.email.toString());
+        setState(() {
+          _username = userData?['profile']?['username']?.toString() ?? 'User';
+          _email = _user!.email ?? 'No email';
+          // Membuat huruf pertama menjadi kapital
+          _username = _username.replaceRange(0, 1, _username[0].toUpperCase());
+        });
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
 
   void logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
@@ -45,14 +76,14 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 16),
             Text(
-              "Username",
+              _username,
               style: GoogleFonts.notoSans(
                 fontSize: 28, 
                 fontWeight: FontWeight.w700,
               ),
             ),
             Text(
-              "userexample.gmail.com",
+              _email,
               style: GoogleFonts.notoSans(
                 fontSize: 14,
                 color: Colors.black.withValues(alpha: 0.5),

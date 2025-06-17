@@ -1,12 +1,7 @@
-//   // ini buat sementara aja log out nya ditaro di home page, later bakal dipindahin ke Profile Page kalo udah ada Profile Page.
-//   void logout(BuildContext context) async {
-//     await FirebaseAuth.instance.signOut();
-//     Navigator.pushReplacementNamed(context, '/login');
-//   }
-
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rebio/utility/firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rebio/pages/contributors.dart';
 import 'package:rebio/theme/constants.dart';
@@ -15,6 +10,7 @@ const Color kDarkTextColor = Colors.black87;
 
 
 class HomePage extends StatefulWidget {
+  
   const HomePage({super.key});
 
   @override
@@ -23,17 +19,35 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   User? _user;
-  String _username = 'User!'; // Default username
+  late CloudFirestoreService service;
+  String _username = '';
+  late Map<String, dynamic>? userData = {};
 
   @override
-  // void initState() {
-  //   super.initState();
-  //   _user = FirebaseAuth.instance.currentUser;
-  //   // Ambil display name, jika tidak ada, gunakan email, jika tidak ada juga, gunakan default.
-  //   _username = _user?.displayName ?? _user?.email?.split('@')[0] ?? 'Username';
-  //   // Membuat huruf pertama menjadi kapital
-  //   _username = '$_username!'.replaceRange(0, 1, _username![0].toUpperCase());
-  // }
+  void initState() {
+    super.initState();
+    service = CloudFirestoreService(FirebaseFirestore.instance);
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      _user = FirebaseAuth.instance.currentUser;
+      if (_user != null) {
+        userData = await service.get('users', _user!.email.toString());
+        setState(() {
+          _username = userData?['profile']?['username']?.toString() ?? 'User';
+          // Membuat huruf pertama menjadi kapital
+          if (_username.isNotEmpty) {
+            _username = '$_username!'.replaceRange(0, 1, _username[0].toUpperCase());
+          }
+        });
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +117,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           const TextSpan(text: 'Hello, '),
           TextSpan(
-            text: "Username",
+            text: _username,
             style: const TextStyle(color: primary),
           ),
         ],
